@@ -4,13 +4,25 @@ const board = document.getElementById('board');
 // VIEW - render logic
 
 // declare function to generate html elements
-// function generate_element(type, id, classList, parent=false, event_listener=false) {...}
+function generate_element(type, id, class_list, parent=false, event=false, event_listener_function=false) {
+    let new_element = document.createElement(type);
+    new_element.id = id;
+    new_element.setAttribute('class', class_list);
+    if (event) {
+        // hmmmm does this need to be 2 variables?
+        new_element.addEventListener(event, event_listener_function);
+    }
+    if (parent) {
+        parent.appendChild(new_element);
+    }
+}
+
 
 // create the parent row that will hold the grid squares
-// generate_element(row, grid_parent, row, board)
+generate_element("row", "grid_parent_row", "row", board)
 
 // declare class for grid squares
-    // init: generate_element(div, id (number), col-4, grid_parent, click_event_listener)
+    // init: generate_element(div, id (number), col-4, grid_parent_row, click_event_listener)
     // will the states 
 
 // MODEL - game logic
