@@ -1,3 +1,6 @@
+// connect to game board div
+const board = document.getElementById('board');
+
 // VIEW - render logic
 
 // declare function to generate html elements
