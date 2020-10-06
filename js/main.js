@@ -54,8 +54,8 @@ function init() {
     // create the grid squares
     for (let i = 0; i < 9; i++) {
         let new_grid_square = generate_element('div', i, 'col-4', grid_parent_row);
-        let new_paragraph = generate_element('p', 'para_'+1, '', new_grid_square);
-        new_paragraph.textContent = i;
+        new_grid_square.setAttribute('style', 'height: calc(4em)');
+        let new_paragraph = generate_element('p', 'para_'+i, '', new_grid_square);
     }
 }
 // set game logic to start
