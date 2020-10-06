@@ -18,16 +18,6 @@ function generate_element(type, id, class_list, parent = false, event = false, e
     return new_element;
 }
 
-// declare class for grid squares
-function grid_square(id) {
-    this.id = String(id);
-}
-
-grid_square.prototype.claim = function (player, turn) {
-    let mark = generate_element('h5', player + '-' + turn, '', this);
-    mark.textContent = player;
-}
-
 // MODEL - game logic
 
 // track game_state
@@ -60,13 +50,12 @@ grid_square.prototype.claim = function (player, turn) {
 function init() {
     board.innerHTML = '';
     // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row h-50 bg-dark', board);
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-dark mx-auto mt-3', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
-        let new_square = new grid_square(i);
-        generate_element('div', i, 'col-4 h-33', grid_parent_row);
-        let new_paragraph = generate_element()
-        new_square.textContent = i;
+        let new_grid_square = generate_element('div', i, 'col-4', grid_parent_row);
+        let new_paragraph = generate_element('p', 'para_'+1, '', new_grid_square);
+        new_paragraph.textContent = i;
     }
 }
 // set game logic to start
