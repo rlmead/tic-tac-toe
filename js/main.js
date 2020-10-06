@@ -3,9 +3,6 @@ const board = document.getElementById('board');
 
 // VIEW - render logic
 
-// create the row that will hold the grid squares
-let grid_parent_row = generate_element('div', 'grid_parent_row', 'row h-50 bg-dark', board);
-
 // declare function to generate html elements
 function generate_element(type, id, class_list, parent = false, event = false, event_listener_function = false) {
     let new_element = document.createElement(type);
@@ -18,15 +15,12 @@ function generate_element(type, id, class_list, parent = false, event = false, e
     if (parent) {
         parent.appendChild(new_element);
     }
+    return new_element;
 }
 
 // declare class for grid squares
 function grid_square(id) {
     this.id = String(id);
-}
-
-grid_square.prototype.draw = function () {
-    generate_element('div', this.id, 'col-4 h-33', grid_parent_row);
 }
 
 grid_square.prototype.claim = function (player, turn) {
@@ -64,10 +58,15 @@ grid_square.prototype.claim = function (player, turn) {
 
 // init (same as reset?)
 function init() {
+    board.innerHTML = '';
+    // create the row that will hold the grid squares
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row h-50 bg-dark', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
         let new_square = new grid_square(i);
-        new_square.draw();
+        generate_element('div', i, 'col-4 h-33', grid_parent_row);
+        let new_paragraph = generate_element()
+        new_square.textContent = i;
     }
 }
 // set game logic to start
