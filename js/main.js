@@ -26,13 +26,14 @@ function start_game() {
     // track current state of game by counting up number of turns
     game_state = 0;
     // track current state of board to check for wins
-    board_state = ['o', 'o', 'o', '', '', '', '', '', ''];
+    board_state = ['', '', '', '', '', '', '', '', ''];
     current_player = 'x';
-    // declare list of all possible winning grid square index combinations
 }
 
 // declare function to check for win or tie
 function check_game(player) {
+    // declare list of all possible winning grid square index combinations
+    // (would it be better to store this as a global variable?)
     let winning_combos = [
         [0, 1, 2],
         [3, 4, 5],
@@ -46,16 +47,14 @@ function check_game(player) {
     // check all winning combos to see if the given indexes in the board_state array match the given player
     for (c of winning_combos) {
         if (c.map((item) => board_state[item]).join('') === player.repeat(3)) {
-            console.log('YAAAAYYY');
-        } else {
-            console.log('NAY')
+            return true;
         }
     }
 }
 
 // CONTROLLER
 
-// init (same as reset?)
+// initialize the game (same as reset?)
 function init() {
     // load empty board
     board.innerHTML = '';
@@ -73,20 +72,31 @@ function init() {
     }
 }
 
-// tile click
-// update game state
-// update board_state
-// when game_state > 5, check win or tie (only for the player that just went)
-// when relevant: display winner/tie message, lock all tiles, show restart button
-// update board & lock tile
+// update everything when a player plays
+function tile_click(tile_id) {
+    // move the game forward when there hasn't yet been a win
+    if (game_state < 9 || (game_state < 5 && !check_game(current_player))) {
+        // update game state
+        game_state += 1;
+        // update board_state and board
+        board_state[tile_id] = current_player;
+        document.getElementById(tile_id).textContent = current_player;
+        // remove event listener from clicked tile
+        // toggle current player
+        current_player = ((current_player) === 'x' ? 'o' : 'x');
+    } else {
+        if (check_game(current_player)) {
+            // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
+            console.log(`YAY ${current_player} WINS!!!`);
+        } else if (game_state === 9) {
+            // report on a tie if it gets that far
+            console.log('It\'s a tie!');
+        }
+        // create a popup with a message dictated by the previous lines
+        // when relevant: lock all tiles, show restart button
+    }
+}
 
-// count up with each turn
-// switch player according to whether game state is even or odd
+    init();
 
-// '' for empty
-// 'o' for player O
-// 'x' for player X
-// update with each click
-init();
-
-check_game('o');
+    check_game('o');
