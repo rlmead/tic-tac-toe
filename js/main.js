@@ -9,7 +9,6 @@ function generate_element(type, id, class_list, parent = false, event = false, e
     new_element.id = id;
     new_element.setAttribute('class', class_list);
     if (event) {
-        // hmmmm does this need to be 2 variables?
         new_element.addEventListener(event, event_listener_function);
     }
     if (parent) {
@@ -48,6 +47,8 @@ function check_game(player) {
     for (c of winning_combos) {
         if (c.map((item) => board_state[item]).join('') === player.repeat(3)) {
             return true;
+        } else {
+            return false;
         }
     }
 }
@@ -62,41 +63,40 @@ function init() {
     let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-dark mx-auto mt-3', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
-        // to do: add event listeners to board tiles to trigger tile click function!
-        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row);
+        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', () => tile_click(i));
         new_grid_square.setAttribute('style', 'height: calc(4em)');
-        let new_paragraph = generate_element('p', 'para_' + i, '', new_grid_square);
-        // set game logic to start
-        start_game();
-        // set next player
     }
+    // set game logic to start
+    start_game();
 }
 
 // update everything when a player plays
 function tile_click(tile_id) {
     // move the game forward when there hasn't yet been a win
-    if (game_state < 9 || (game_state < 5 && !check_game(current_player))) {
-        // update game state
-        game_state += 1;
-        // update board_state and board
-        board_state[tile_id] = current_player;
-        document.getElementById(tile_id).textContent = current_player;
-        // remove event listener from clicked tile
-        // toggle current player
-        current_player = ((current_player) === 'x' ? 'o' : 'x');
+    // update game state
+    game_state += 1;
+    // update board_state array
+    board_state[tile_id] = current_player;
+    // update the board
+    document.getElementById(tile_id).textContent = current_player;
+    if (game_state < 4 || (game_state < 9 && !check_game(current_player))) {
     } else {
+        let message;
         if (check_game(current_player)) {
             // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
-            console.log(`YAY ${current_player} WINS!!!`);
+            message = `YAY ${current_player} WINS`
         } else if (game_state === 9) {
-            // report on a tie if it gets that far
-            console.log('It\'s a tie!');
+            // report on a draw if it gets that far
+            message = 'It\'s a draw';
         }
-        // create a popup with a message dictated by the previous lines
-        // when relevant: lock all tiles, show restart button
+        // !create a modal with a message dictated by the previous lines
+        // let end_modal = generate_element('div','end_modal','modal fade bd-example-modal-lg','board');
+        console.log(message);
     }
+    // toggle current player
+    current_player = ((current_player) === 'x' ? 'o' : 'x');
+    // ! not working - remove event listener from clicked tile
+    document.getElementById(tile_id).removeEventListener('click', (() => tile_click(i)));
 }
 
-    init();
-
-    check_game('o');
+init();
