@@ -45,13 +45,11 @@ function check_game(player) {
     ];
     // check all winning combos to see if the given indexes in the board_state array match the given player
     for (let c of winning_combos) {
-        console.log(c);
         if (c.map((item) => board_state[item]).join('') === player.repeat(3)) {
             return true;
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 // CONTROLLER
