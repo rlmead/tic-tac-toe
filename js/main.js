@@ -1,5 +1,7 @@
 // connect to game board div
 const board = document.getElementById('board');
+// declare some global variables
+let game_state, board_state, current_player, winning_combos, message_board, reset_button;
 
 // VIEW - render logic
 
@@ -18,7 +20,6 @@ function generate_element(type, id, class_list, parent = false, event = false, e
 }
 
 // MODEL - game logic
-let game_state, board_state, current_player, winning_combos;
 
 // function to initialize game logic
 function start_game() {
@@ -55,8 +56,6 @@ function check_game(player) {
 
 // CONTROLLER
 
-let message_board;
-
 // initialize the game (same as reset?)
 function init() {
     // load empty board
@@ -70,6 +69,10 @@ function init() {
     }
     // create an element to communicate current game state
     message_board = generate_element('h1', 'message_board', 'display-4', board);
+    // create hidden reset button
+    reset_button = generate_element('button', 'reset_button', 'btn btn-primary d-none', board);
+    reset_button.textContent = 'restart';
+    reset_button.addEventListener('click', init);
     // set game logic to start
     start_game();
 }
@@ -94,12 +97,14 @@ function tile_click(event) {
                     document.getElementById(i).removeEventListener('click', tile_click);
                 }
             }
-            // !generate button to reset game
+            // !show reset button
+            reset_button.classList.remove('d-none');
             return;
             // report on a draw if it gets that far
         } else if (game_state === 9) {
             message_board.textContent = 'It\'s a draw';
-            // !generate button to reset game
+            // !show reset button
+            reset_button.classList.remove('d-none');
             return;
         }
     }
