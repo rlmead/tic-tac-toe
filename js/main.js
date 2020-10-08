@@ -84,7 +84,7 @@ function init() {
     init_game();
 }
 
-// should this be broken apart by view/model components?
+// should this be broken apart into separate model/view functions?
 // update everything when a player plays
 function tile_click(event) {
     // move the game forward upon click
