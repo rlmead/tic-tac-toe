@@ -24,16 +24,16 @@ function init_view() {
     // load empty board
     board.innerHTML = '';
     // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-dark mx-auto mt-3', board);
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-secondary mx-auto mt-3', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
-        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', tile_click);
+        let new_grid_square = generate_element('div', i, 'col-4 border border-light text-light', grid_parent_row, 'click', tile_click);
         new_grid_square.setAttribute('style', 'height: calc(4em)');
     }
     // create an element to communicate current game state
     message_board = generate_element('h1', 'message_board', 'display-4', board);
     // create hidden reset button
-    reset_button = generate_element('button', 'reset_button', 'btn btn-primary d-none', board);
+    reset_button = generate_element('button', 'reset_button', 'btn btn-danger d-none', board);
     reset_button.textContent = 'restart';
     reset_button.addEventListener('click', init);
 }
@@ -96,7 +96,7 @@ function tile_click(event) {
     if (game_state > 4) {
         // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
-            message_board.textContent = `YAY ${current_player} WINS`;
+            message_board.textContent = `PLAYER ${current_player} WINS!!`;
             // lock the remaining buttons
             for (let i = 0; i < board_state.length; i++) {
                 if (board_state[i] === '') {
