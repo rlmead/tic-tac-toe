@@ -27,6 +27,7 @@ function start_game() {
     // track current state of board to check for wins
     board_state = ['', '', '', '', '', '', '', '', ''];
     current_player = 'x';
+    message_board.textContent = `player ${current_player}, take your turn`;
 }
 
 // declare function to check for win or tie
@@ -54,6 +55,8 @@ function check_game(player) {
 
 // CONTROLLER
 
+let message_board;
+
 // initialize the game (same as reset?)
 function init() {
     // load empty board
@@ -65,6 +68,8 @@ function init() {
         let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', tile_click);
         new_grid_square.setAttribute('style', 'height: calc(4em)');
     }
+    // create an element to communicate current game state
+    message_board = generate_element('h1', 'message_board', 'display-4', board);
     // set game logic to start
     start_game();
 }
@@ -80,23 +85,28 @@ function tile_click(event) {
     // update the board
     event.target.textContent = current_player;
     if (game_state > 4) {
-        let message = '';
+        // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
-            // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
-            message = `YAY ${current_player} WINS`;
-        } else if (game_state === 9) {
+            message_board.textContent = `YAY ${current_player} WINS`;
+            // lock the remaining buttons
+            for (let i = 0; i < board_state.length; i++) {
+                if (board_state[i] === '') {
+                    document.getElementById(i).removeEventListener('click', tile_click);
+                }
+            }
+            // !generate button to reset game
+            return;
             // report on a draw if it gets that far
-            message = 'It\'s a draw';
-        }
-        if (message != '') {
-            // !add message to modal with a message dictated by the previous lines
-            console.log(message);
-            // !generate element to display final message
-            // !with button to reset game
+        } else if (game_state === 9) {
+            message_board.textContent = 'It\'s a draw';
+            // !generate button to reset game
+            return;
         }
     }
     // toggle current player
     current_player = ((current_player) === 'x' ? 'o' : 'x');
+    // update message board message
+    message_board.textContent = `player ${current_player}, take your turn`;
     // remove event listener from clicked tile
     event.target.removeEventListener('click', tile_click);
 }
