@@ -80,17 +80,20 @@ function tile_click(event) {
     // update the board
     event.target.textContent = current_player;
     if (game_state > 4) {
-        let message;
+        let message = '';
         if (check_game(current_player)) {
             // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
-            alert(`YAY ${current_player} WINS`)
+            message = `YAY ${current_player} WINS`;
         } else if (game_state === 9) {
             // report on a draw if it gets that far
-            alert('It\'s a draw');
+            message = 'It\'s a draw';
         }
-        // !create a modal with a message dictated by the previous lines
-        // let end_modal = generate_element('div','end_modal','modal fade bd-example-modal-lg','board');
-        console.log(message);
+        if (message != '') {
+            // !add message to modal with a message dictated by the previous lines
+            console.log(message);
+            // !generate element to display final message
+            // !with button to reset game
+        }
     }
     // toggle current player
     current_player = ((current_player) === 'x' ? 'o' : 'x');
