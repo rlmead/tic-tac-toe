@@ -27,8 +27,9 @@ function init_view() {
     let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-secondary mx-auto mt-3', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
-        let new_grid_square = generate_element('div', i, 'col-4 border border-light text-light', grid_parent_row, 'click', tile_click);
-        new_grid_square.setAttribute('style', 'height: calc(4em)');
+        let new_grid_square = generate_element('div', i, 'col-4 border border-light text-secondary', grid_parent_row, 'click', tile_click);
+        new_grid_square.setAttribute('style', 'font-size: 4em');
+        new_grid_square.textContent = '-';
     }
     // create an element to communicate current game state
     message_board = generate_element('h1', 'message_board', 'display-4', board);
@@ -83,6 +84,7 @@ function init() {
     init_game();
 }
 
+// should this be broken apart by view/model components?
 // update everything when a player plays
 function tile_click(event) {
     // move the game forward upon click
@@ -93,6 +95,8 @@ function tile_click(event) {
     board_state[tile_id] = current_player;
     // update the board
     event.target.textContent = current_player;
+    event.target.classList.remove('text-secondary');
+    event.target.classList.add('text-light');
     if (game_state > 4) {
         // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
