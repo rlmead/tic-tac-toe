@@ -19,16 +19,35 @@ function generate_element(type, id, class_list, parent = false, event = false, e
     return new_element;
 }
 
+// declare function to draw all html elements
+function init_view() {
+    // load empty board
+    board.innerHTML = '';
+    // create the row that will hold the grid squares
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-secondary mx-auto mt-3', board);
+    // create the grid squares
+    for (let i = 0; i < 9; i++) {
+        let new_grid_square = generate_element('div', i, 'col-4 border border-light text-light', grid_parent_row, 'click', tile_click);
+        new_grid_square.setAttribute('style', 'height: calc(4em)');
+    }
+    // create an element to communicate current game state
+    message_board = generate_element('h1', 'message_board', 'display-4', board);
+    // create hidden reset button
+    reset_button = generate_element('button', 'reset_button', 'btn btn-danger d-none', board);
+    reset_button.textContent = 'restart';
+    reset_button.addEventListener('click', init);
+}
+
 // MODEL - game logic
 
 // function to initialize game logic
-function start_game() {
+function init_game() {
     // track current state of game by counting up number of turns
     game_state = 0;
     // track current state of board to check for wins
     board_state = ['', '', '', '', '', '', '', '', ''];
-    current_player = 'x';
-    message_board.textContent = `player ${current_player}, take your turn`;
+    current_player = 'X';
+    message_board.textContent = `your turn, player ${current_player}!`;
 }
 
 // declare function to check for win or tie
@@ -58,23 +77,10 @@ function check_game(player) {
 
 // initialize the game (same as reset?)
 function init() {
-    // load empty board
-    board.innerHTML = '';
-    // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-dark mx-auto mt-3', board);
-    // create the grid squares
-    for (let i = 0; i < 9; i++) {
-        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', tile_click);
-        new_grid_square.setAttribute('style', 'height: calc(4em)');
-    }
-    // create an element to communicate current game state
-    message_board = generate_element('h1', 'message_board', 'display-4', board);
-    // create hidden reset button
-    reset_button = generate_element('button', 'reset_button', 'btn btn-primary d-none', board);
-    reset_button.textContent = 'restart';
-    reset_button.addEventListener('click', init);
+    // set view to start
+    init_view();
     // set game logic to start
-    start_game();
+    init_game();
 }
 
 // update everything when a player plays
@@ -90,7 +96,7 @@ function tile_click(event) {
     if (game_state > 4) {
         // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
-            message_board.textContent = `YAY ${current_player} WINS`;
+            message_board.textContent = `PLAYER ${current_player} WINS!!`;
             // lock the remaining buttons
             for (let i = 0; i < board_state.length; i++) {
                 if (board_state[i] === '') {
@@ -109,9 +115,9 @@ function tile_click(event) {
         }
     }
     // toggle current player
-    current_player = ((current_player) === 'x' ? 'o' : 'x');
+    current_player = ((current_player) === 'X' ? 'O' : 'X');
     // update message board message
-    message_board.textContent = `player ${current_player}, take your turn`;
+    message_board.textContent = `your turn, player ${current_player}!`;
     // remove event listener from clicked tile
     event.target.removeEventListener('click', tile_click);
 }
