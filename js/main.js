@@ -44,7 +44,8 @@ function check_game(player) {
         [2, 4, 6]
     ];
     // check all winning combos to see if the given indexes in the board_state array match the given player
-    for (c of winning_combos) {
+    for (let c of winning_combos) {
+        console.log(c);
         if (c.map((item) => board_state[item]).join('') === player.repeat(3)) {
             return true;
         } else {
@@ -63,7 +64,7 @@ function init() {
     let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-dark mx-auto mt-3', board);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
-        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', () => tile_click(i));
+        let new_grid_square = generate_element('div', i, 'col-4 border text-light', grid_parent_row, 'click', tile_click);
         new_grid_square.setAttribute('style', 'height: calc(4em)');
     }
     // set game logic to start
@@ -71,23 +72,23 @@ function init() {
 }
 
 // update everything when a player plays
-function tile_click(tile_id) {
-    // move the game forward when there hasn't yet been a win
+function tile_click(event) {
+    // move the game forward upon click
+    let tile_id = event.target.id;
     // update game state
     game_state += 1;
     // update board_state array
     board_state[tile_id] = current_player;
     // update the board
-    document.getElementById(tile_id).textContent = current_player;
-    if (game_state < 4 || (game_state < 9 && !check_game(current_player))) {
-    } else {
+    event.target.textContent = current_player;
+    if (game_state > 4) {
         let message;
         if (check_game(current_player)) {
             // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
-            message = `YAY ${current_player} WINS`
+            alert(`YAY ${current_player} WINS`)
         } else if (game_state === 9) {
             // report on a draw if it gets that far
-            message = 'It\'s a draw';
+            alert('It\'s a draw');
         }
         // !create a modal with a message dictated by the previous lines
         // let end_modal = generate_element('div','end_modal','modal fade bd-example-modal-lg','board');
@@ -95,8 +96,8 @@ function tile_click(tile_id) {
     }
     // toggle current player
     current_player = ((current_player) === 'x' ? 'o' : 'x');
-    // ! not working - remove event listener from clicked tile
-    document.getElementById(tile_id).removeEventListener('click', (() => tile_click(i)));
+    // remove event listener from clicked tile
+    event.target.removeEventListener('click', tile_click);
 }
 
 init();
