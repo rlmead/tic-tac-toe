@@ -98,7 +98,7 @@ function tile_click(event) {
     event.target.classList.remove('text-secondary');
     event.target.classList.add('text-light');
     if (game_state > 4) {
-        // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
+        // when >4 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
             message_board.textContent = `PLAYER ${current_player} WINS!!`;
             // lock the remaining buttons
@@ -107,13 +107,13 @@ function tile_click(event) {
                     document.getElementById(i).removeEventListener('click', tile_click);
                 }
             }
-            // !show reset button
+            // show reset button
             reset_button.classList.remove('d-none');
             return;
             // report on a draw if it gets that far
         } else if (game_state === 9) {
             message_board.textContent = 'IT\'S A DRAW';
-            // !show reset button
+            // show reset button
             reset_button.classList.remove('d-none');
             return;
         }
