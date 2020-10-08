@@ -35,7 +35,7 @@ function init_view() {
     message_board = generate_element('h1', 'message_board', 'display-4', board);
     // create hidden reset button
     reset_button = generate_element('button', 'reset_button', 'btn btn-danger d-none', board);
-    reset_button.textContent = 'restart';
+    reset_button.textContent = 'play again';
     reset_button.addEventListener('click', init);
 }
 
@@ -112,7 +112,7 @@ function tile_click(event) {
             return;
             // report on a draw if it gets that far
         } else if (game_state === 9) {
-            message_board.textContent = 'It\'s a draw';
+            message_board.textContent = 'IT\'S A DRAW';
             // !show reset button
             reset_button.classList.remove('d-none');
             return;
