@@ -24,15 +24,14 @@ function init_view() {
     // load empty board
     board.innerHTML = '';
     // create row to hold responsive column
-    let responsive_row = generate_element('div', 'responsive_row', 'row bg-secondary mx-auto mt-3', board);
+    let responsive_row = generate_element('div', 'responsive_row', 'row mx-auto mt-3', board);
     // create responsive column
     let responsive_column = generate_element('div', 'responsive_column', 'col-md-6 offset-md-3', responsive_row);
     // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row bg-secondary mx-auto mt-3', responsive_column);
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row mx-auto', responsive_column);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
         let new_grid_square = generate_element('div', i, 'col-4 border border-light text-secondary', grid_parent_row, 'click', tile_click);
-        new_grid_square.setAttribute('style', 'font-size: 4em');
         new_grid_square.textContent = '-';
     }
     // create an element to communicate current game state
