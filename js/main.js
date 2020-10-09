@@ -23,16 +23,19 @@ function generate_element(type, id, class_list, parent = false, event = false, e
 function init_view() {
     // load empty board
     board.innerHTML = '';
+    // create row to hold responsive column
+    let responsive_row = generate_element('div', 'responsive_row', 'row mx-auto mt-3', board);
+    // create responsive column
+    let responsive_column = generate_element('div', 'responsive_column', 'col-md-6 offset-md-3', responsive_row);
     // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-secondary mx-auto mt-3', board);
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row mx-auto', responsive_column);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
         let new_grid_square = generate_element('div', i, 'col-4 border border-light text-secondary', grid_parent_row, 'click', tile_click);
-        new_grid_square.setAttribute('style', 'font-size: 4em');
         new_grid_square.textContent = '-';
     }
     // create an element to communicate current game state
-    message_board = generate_element('h1', 'message_board', 'display-4', board);
+    message_board = generate_element('h1', 'message_board', '', board);
     // create hidden reset button
     reset_button = generate_element('button', 'reset_button', 'btn btn-danger d-none', board);
     reset_button.textContent = 'play again';
@@ -84,7 +87,7 @@ function init() {
     init_game();
 }
 
-// should this be broken apart by view/model components?
+// should this be broken apart into separate model/view functions?
 // update everything when a player plays
 function tile_click(event) {
     // move the game forward upon click
@@ -98,7 +101,7 @@ function tile_click(event) {
     event.target.classList.remove('text-secondary');
     event.target.classList.add('text-light');
     if (game_state > 4) {
-        // when >4 and <9 plays have been made, check for win or tie (only for the player that just went)
+        // when >4 plays have been made, check for win or tie (only for the player that just went)
         if (check_game(current_player)) {
             message_board.textContent = `PLAYER ${current_player} WINS!!`;
             // lock the remaining buttons
@@ -107,13 +110,13 @@ function tile_click(event) {
                     document.getElementById(i).removeEventListener('click', tile_click);
                 }
             }
-            // !show reset button
+            // show reset button
             reset_button.classList.remove('d-none');
             return;
             // report on a draw if it gets that far
         } else if (game_state === 9) {
             message_board.textContent = 'IT\'S A DRAW';
-            // !show reset button
+            // show reset button
             reset_button.classList.remove('d-none');
             return;
         }
