@@ -1,0 +1,13 @@
+/* responsively size page text for larger views (>800px) */
+@media screen and (min-width: 801px) {
+    h1 {
+        font-size: 4em;
+    }
+}
+
+  /* responsively size page text for smaller views (<=800px) */
+@media screen and (max-width: 800px) {
+    h1 {
+        font-size: 2.5em;
+    }
+}

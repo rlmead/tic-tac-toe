@@ -23,8 +23,12 @@ function generate_element(type, id, class_list, parent = false, event = false, e
 function init_view() {
     // load empty board
     board.innerHTML = '';
+    // create row to hold responsive column
+    let responsive_row = generate_element('div', 'responsive_row', 'row bg-secondary mx-auto mt-3', board);
+    // create responsive column
+    let responsive_column = generate_element('div', 'responsive_column', 'col-md-6 offset-md-3', responsive_row);
     // create the row that will hold the grid squares
-    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row w-50 bg-secondary mx-auto mt-3', board);
+    let grid_parent_row = generate_element('div', 'grid_parent_row', 'row bg-secondary mx-auto mt-3', responsive_column);
     // create the grid squares
     for (let i = 0; i < 9; i++) {
         let new_grid_square = generate_element('div', i, 'col-4 border border-light text-secondary', grid_parent_row, 'click', tile_click);
@@ -32,7 +36,7 @@ function init_view() {
         new_grid_square.textContent = '-';
     }
     // create an element to communicate current game state
-    message_board = generate_element('h1', 'message_board', 'display-4', board);
+    message_board = generate_element('h1', 'message_board', '', board);
     // create hidden reset button
     reset_button = generate_element('button', 'reset_button', 'btn btn-danger d-none', board);
     reset_button.textContent = 'play again';
